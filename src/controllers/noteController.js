@@ -22,6 +22,31 @@ const createNote = async(req,res)=>{
     }
 }
 
+const allNotes = async(req,res)=>{
+    try{
+        const userId = req.user._id
+          const allNotes = await notesModel.find({user:userId})
+          res.status(200).json(allNotes)
+    }
+    catch(err){
+        res.status(500).json({message:"Cannot fetch all notes"+ err.message})
+    }
+}
+
+const updateNote = async(req,res)=>{
+    try{ 
+        const userId = req.user._id;
+          const data = req.body;
+          const noteId = req.params.id;
+          
+          const noteUpdate = await notesModel.findByIdAndUpdate({userId,noteId},data , {new:true}); 
+          res.status(200).json({message:"Note Updated Successfully"});
+    }
+    catch(err){
+        res.status(500).json({message:"Cannot update note" + err.message});
+    }
+}
+
 const deleteNote = async(req,res)=>{
     try{
          const noteId = req.params.id;
@@ -29,9 +54,9 @@ const deleteNote = async(req,res)=>{
          res.status(200).json({message:"Note deleted successfully"});
     }
     catch(err){
-        res.status(500).json({message : "Delete Failed"});
+        res.status(500).json({message : "Delete Failed" + err.message});
     }
 }
 
-module.exports = {createNote,deleteNote}
+module.exports = { createNote, deleteNote, allNotes, updateNote };
 
