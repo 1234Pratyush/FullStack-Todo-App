@@ -39,7 +39,7 @@ const updateNote = async(req,res)=>{
           const data = req.body;
           const noteId = req.params.id;
           
-          const noteUpdate = await notesModel.findByIdAndUpdate({userId,noteId},data , {new:true}); 
+          const noteUpdate = await notesModel.findOneAndUpdate({_id:noteId,user:userId},data,{new:true}); 
           res.status(200).json({message:"Note Updated Successfully"});
     }
     catch(err){
@@ -49,8 +49,9 @@ const updateNote = async(req,res)=>{
 
 const deleteNote = async(req,res)=>{
     try{
+        const userId = req.user._id;
          const noteId = req.params.id;
-         const noteDelete = await notesModel.findOneAndDelete({_id:noteId,user:req.user._id});
+         const noteDelete = await notesModel.findOneAndDelete({_id:noteId,user:userId});
          res.status(200).json({message:"Note deleted successfully"});
     }
     catch(err){
