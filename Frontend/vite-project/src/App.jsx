@@ -5,6 +5,7 @@ import './App.css'
 import {Route,Routes} from 'react-router-dom';
 import SignUp from './Components/SignUp';
 import SignIn from './Components/SignIn';
+import TodoForm from './Components/TodoForm';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/signin" element={<SignIn/>} />
+          <Route path="/form" element={<TodoForm/>} />
         </Routes>
  
  

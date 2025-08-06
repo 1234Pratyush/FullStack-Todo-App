@@ -3,7 +3,8 @@ const app = express();
 const connectDB = require('./config/database');
 const authRoute = require('./routes/authRoute');
 const noteRoute = require('./routes/noteRoute');
-const cors = require('cors')
+const cors = require('cors');
+const cookieParser= require('cookie-parser');
 
 require("dotenv").config();
 app.use(express.json());
@@ -11,9 +12,11 @@ app.use(cors({
     origin : process.env.CORS_ORIGIN,
     credentials:true
 }));
+app.use(cookieParser());
+
 
 app.use('/api/users',authRoute);
-app.use('/api/note',noteRoute);
+app.use('/api/todo',noteRoute);
 
 
 const startServer = async() =>{

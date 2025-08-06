@@ -1,28 +1,36 @@
 import React, { useState } from "react";
-import axios from 'axios'
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+axios.defaults.withCredentials = true;
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-    const response = await axios.post("http://localhost:3500/api/users/signup",formData);
-    console.log(response.data);
-    alert("Signup Successfull");
-    }
-    catch(err){
-        console.log("Error Submitting Form :" + err.message);
+    try {
+      const response = await axios.post(
+        "http://localhost:3500/api/users/signup",
+        formData ,{
+            withCredentials:true
+        }
+      );
+      console.log(response.data);
+      alert("Signup Successfull");
+      navigate("/signin");
+    } catch (err) {
+      console.log("Error Submitting Form :" + err.message);
     }
   };
 
@@ -72,8 +80,6 @@ const SignUp = () => {
             required
           />
         </div>
-
-     
 
         <button
           type="submit"
