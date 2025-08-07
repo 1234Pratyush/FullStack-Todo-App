@@ -6,6 +6,7 @@ import {Route,Routes} from 'react-router-dom';
 import SignUp from './Components/SignUp';
 import SignIn from './Components/SignIn';
 import TodoForm from './Components/TodoForm';
+import TodoList from './Components/TodoList';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/signin" element={<SignIn/>} />
           <Route path="/form" element={<TodoForm/>} />
+          <Route path="/todolist" element={<TodoList/>}  />
         </Routes>
  
  

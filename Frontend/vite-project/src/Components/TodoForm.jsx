@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const Todo = () => {
@@ -7,6 +8,8 @@ const Todo = () => {
     title: "",
     content: "",
   });
+
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(null); 
 
@@ -22,6 +25,7 @@ const Todo = () => {
     try {
       const res = await axios.get("http://localhost:3500/api/todo/create");
       setUser(res.data); 
+     
     } catch (err) {
       console.log("Error fetching user: ", err.message);
     }
@@ -41,6 +45,7 @@ const Todo = () => {
       console.log(res.data);
       alert("Todo Created");
       setTodo({ title: "", content: "" });
+      navigate("/todolist");
     } catch (err) {
       console.log("Error cannot create Todo: " + err.message);
     }
