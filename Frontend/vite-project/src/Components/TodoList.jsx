@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import UpdateModal from "./UpdateModal"; // Make sure path is correct!
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState(null);
 
-  // Fetch all todos
   const fetchTodos = async () => {
     try {
       const res = await axios.get("http://localhost:3500/api/todo/allNotes", {
@@ -23,37 +25,24 @@ const TodoList = () => {
     fetchTodos();
   }, []);
 
-  // Delete a todo
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this?")
-    if(!confirmDelete) return;
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this?"
+    );
+    if (!confirmDelete) return;
     try {
       await axios.delete(`http://localhost:3500/api/todo/delete/${id}`, {
         withCredentials: true,
       });
-      fetchTodos(); 
+      fetchTodos();
     } catch (err) {
       console.error("Error deleting todo:", err.message);
     }
   };
 
-  // Update a todo
-  const handleUpdate = async (id, oldTitle, oldContent) => {
-    const newTitle = prompt("Enter new title:", oldTitle);
-    const newContent = prompt("Enter new content:", oldContent);
-
-    if (newTitle && newContent) {
-      try {
-        await axios.put(
-          `http://localhost:3500/api/todo/update/${id}`,
-          { title: newTitle, content: newContent },
-          { withCredentials: true }
-        );
-        fetchTodos(); // Refresh list
-      } catch (err) {
-        console.error("Error updating todo:", err.message);
-      }
-    }
+  const handleUpdate = (todo) => {
+    setSelectedTodo(todo);
+    setIsModalOpen(true);
   };
 
   return (
@@ -62,7 +51,6 @@ const TodoList = () => {
         <h1 className="text-2xl font-bold mb-4 text-center text-white">
           Todo List
         </h1>
-
         {todos.length === 0 ? (
           <p className="text-center text-gray-400">No todos found.</p>
         ) : (
@@ -77,19 +65,16 @@ const TodoList = () => {
                 <p className="text-sm text-gray-300 mb-2">
                   Created at: {new Date(todo.createdAt).toLocaleString()}
                 </p>
-
                 <div className="flex gap-2">
                   <button
-                    onClick={() =>
-                      handleUpdate(todo._id, todo.title, todo.content)
-                    }
-                    className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                    onClick={() => handleUpdate(todo)}
+                    className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 cursor-pointer"
                   >
                     Update
                   </button>
                   <button
                     onClick={() => handleDelete(todo._id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
                   >
                     Delete
                   </button>
@@ -99,6 +84,14 @@ const TodoList = () => {
           </ul>
         )}
       </div>
+      {/* Modal for Update */}
+      {isModalOpen && selectedTodo && (
+        <UpdateModal
+          todo={selectedTodo}
+          onClose={() => setIsModalOpen(false)}
+          onUpdated={fetchTodos}
+        />
+      )}
     </div>
   );
 };
