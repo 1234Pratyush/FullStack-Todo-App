@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import UpdateModal from "./UpdateModal"; // Make sure path is correct!
+import UpdateModal from "../Components/UpdateModal"; 
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -60,8 +60,8 @@ const TodoList = () => {
                 key={todo._id}
                 className="p-4 border border-gray-700 rounded bg-zinc-700"
               >
-                <p className="text-lg text-white">Title: {todo.title}</p>
-                <p className="text-lg text-white">Content: {todo.content}</p>
+                <p className="text-lg text-white">Title : {todo.title}</p>
+                <p className="text-lg text-white">Content : {todo.content}</p>
                 <p className="text-sm text-gray-300 mb-2">
                   Created at: {new Date(todo.createdAt).toLocaleString()}
                 </p>

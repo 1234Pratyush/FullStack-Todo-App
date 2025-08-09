@@ -11,13 +11,13 @@ export default function UpdateModal({ todo, onClose, onUpdated }) {
     setLoading(true);
     try {
       await axios.put(
-        `http://localhost:3500/api/todo/update/${todo._id}`,
+        `http://localhost:3500/api/todo/updateNote/${todo._id}`,
         { title, content },
         { withCredentials: true }
       );
       setLoading(false);
-      onUpdated(); // refresh todos
-      onClose(); // close modal
+      onUpdated(); 
+      onClose(); 
     } catch (err) {
       setLoading(false);
       alert(

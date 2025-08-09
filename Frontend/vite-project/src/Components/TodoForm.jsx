@@ -40,7 +40,9 @@ const Todo = () => {
     try {
       const res = await axios.post(
         "http://localhost:3500/api/todo/create",
-        todo
+        todo,{
+          setCredentials:true,
+        }
       );
       console.log(res.data);
       alert("Todo Created");
@@ -53,7 +55,7 @@ const Todo = () => {
 
   return (
     <div className="min-h-screen bg-zinc-900 p-8 relative text-white">
-      {/* Top-right user circle */}
+   
       <div className="absolute top-6 right-6">
         <div className="w-22 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">
           {user ? user.name.split(" ")[0] : "User"}
